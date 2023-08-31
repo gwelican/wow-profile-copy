@@ -483,29 +483,13 @@ func main() {
 				updated := bytes.ReplaceAll(data, []byte(srcConfig.wtf.character + "-" + srcConfig.wtf.server), []byte(dstConfig.wtf.character + "-" + dstConfig.wtf.server))
 				updated = bytes.ReplaceAll(data, []byte(srcConfig.wtf.character + " - " + srcConfig.wtf.server), []byte(dstConfig.wtf.character + " - " + dstConfig.wtf.server))
 				updated = bytes.ReplaceAll(data, []byte(srcConfig.wtf.server + " - " + srcConfig.wtf.character), []byte(dstConfig.wtf.server + " - " + dstConfig.wtf.account))
-				//#updated = bytes.ReplaceAll(updated, []byte("Gwelican - Pagle"), []byte("Gwelican - Classic PTR Realm 1"))
-				//updated = bytes.ReplaceAll(updated, []byte("Pagle-Gwelican"), []byte("Classic PTR Realm 1-Gwelican"))
 				os.WriteFile(path, updated, 0666)
 		
-			//fmt.Println(path, d.Name(), "directory?", d.IsDir())
 			}
 			return nil
 	})
-	fmt.Println("updated")
+	fmt.Println("WTF lua files are updated")
 				
-    //     lines := strings.Split(string(input), "\n")
-				//
-    //     for i, line := range lines {
-				// 				line
-    //             if strings.Contains(line, "Gwelican-Pagle") {
-    //                     lines[i] = "LOL"
-    //             }
-    //     
-				// }
-		// #output := strings.Join(lines, "\n")
-  //       err = ioutil.WriteFile("myfile", []byte(output), 0644)
-		//
-
 	//
 	// clean up
 	//
