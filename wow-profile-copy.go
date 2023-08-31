@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"github.com/pterm/pterm"
 	"io"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
 	"regexp"
 	"runtime"
 	"strings"
+	"bytes"
 	// "github.com/pterm/pterm/putils"
 )
 
@@ -42,7 +44,7 @@ var _wowInstanceFolderNames = map[string]string{
 
 var _probableWowInstallLocations = map[string]string{
 	"darwin":  "/Applications/World of Warcraft",
-	"windows": "C:\\Program Files (x86)\\World of Warcraft",
+	"windows": "C:\\World of Warcraft",
 }
 
 //
@@ -470,6 +472,41 @@ func main() {
 		}
 	}
 
+  filepath.WalkDir(dstWtfAccountPath, func(path string, d fs.DirEntry, err error) error {
+			if strings.HasSuffix(path, ".lua") {
+				fmt.Println(path)
+				data, err := os.ReadFile(path)
+				if err != nil {
+					log.Fatalln(err)
+			  }
+
+				fmt.Println("replace", srcConfig.wtf.character, "-", srcConfig.wtf.server, " to ", dstConfig.wtf.character, "-", dstConfig.wtf.server)
+				updated := bytes.ReplaceAll(data, []byte(srcConfig.wtf.character + "-" + srcConfig.wtf.server), []byte(dstConfig.wtf.character + "-" + dstConfig.wtf.server))
+				updated = bytes.ReplaceAll(data, []byte(srcConfig.wtf.character + " - " + srcConfig.wtf.server), []byte(dstConfig.wtf.character + " - " + dstConfig.wtf.server))
+				updated = bytes.ReplaceAll(data, []byte(srcConfig.wtf.server + " - " + srcConfig.wtf.character), []byte(dstConfig.wtf.server + " - " + dstConfig.wtf.account))
+				//#updated = bytes.ReplaceAll(updated, []byte("Gwelican - Pagle"), []byte("Gwelican - Classic PTR Realm 1"))
+				//updated = bytes.ReplaceAll(updated, []byte("Pagle-Gwelican"), []byte("Classic PTR Realm 1-Gwelican"))
+				os.WriteFile(path, updated, 0666)
+		
+			//fmt.Println(path, d.Name(), "directory?", d.IsDir())
+			}
+			return nil
+	})
+	fmt.Println("updated")
+				
+    //     lines := strings.Split(string(input), "\n")
+				//
+    //     for i, line := range lines {
+				// 				line
+    //             if strings.Contains(line, "Gwelican-Pagle") {
+    //                     lines[i] = "LOL"
+    //             }
+    //     
+				// }
+		// #output := strings.Join(lines, "\n")
+  //       err = ioutil.WriteFile("myfile", []byte(output), 0644)
+		//
+
 	//
 	// clean up
 	//
@@ -499,3 +536,5 @@ func main() {
 		fmt.Scanln()
 	}
 }
+
+// vim: tabstop=2
