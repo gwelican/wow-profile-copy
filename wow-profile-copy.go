@@ -474,13 +474,12 @@ func main() {
 
   filepath.WalkDir(dstWtfAccountPath, func(path string, d fs.DirEntry, err error) error {
 			if strings.HasSuffix(path, ".lua") {
-				fmt.Println(path)
+				fmt.Println("Processing lua file:", path)
 				data, err := os.ReadFile(path)
 				if err != nil {
 					log.Fatalln(err)
 			  }
 
-				fmt.Println("replace", srcConfig.wtf.character, "-", srcConfig.wtf.server, " to ", dstConfig.wtf.character, "-", dstConfig.wtf.server)
 				updated := bytes.ReplaceAll(data, []byte(srcConfig.wtf.character + "-" + srcConfig.wtf.server), []byte(dstConfig.wtf.character + "-" + dstConfig.wtf.server))
 				updated = bytes.ReplaceAll(data, []byte(srcConfig.wtf.character + " - " + srcConfig.wtf.server), []byte(dstConfig.wtf.character + " - " + dstConfig.wtf.server))
 				updated = bytes.ReplaceAll(data, []byte(srcConfig.wtf.server + " - " + srcConfig.wtf.character), []byte(dstConfig.wtf.server + " - " + dstConfig.wtf.account))
